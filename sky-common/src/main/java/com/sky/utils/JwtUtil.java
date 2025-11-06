@@ -1,13 +1,13 @@
 package com.sky.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 
+@Slf4j
 public class JwtUtil {
     /**
      * 生成jwt
@@ -25,7 +25,9 @@ public class JwtUtil {
         // 生成JWT的时间
         long expMillis = System.currentTimeMillis() + ttlMillis;
         Date exp = new Date(expMillis);
-
+        System.out.println("令牌过期时间: " + exp);
+        System.out.println("当前时间: " + new Date());
+        System.out.println("是否已过期: " + new Date().after(exp));
         // 设置jwt的body
         JwtBuilder builder = Jwts.builder()
                 // 如果有私有声明，一定要先设置这个自己创建的私有的声明，这个是给builder的claim赋值，一旦写在标准的声明赋值之后，就是覆盖了那些标准的声明的
@@ -46,13 +48,34 @@ public class JwtUtil {
      * @return
      */
     public static Claims parseJWT(String secretKey, String token) {
-        // 得到DefaultJwtParser
-        Claims claims = Jwts.parser()
-                // 设置签名的秘钥
-                .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
-                // 设置需要解析的jwt
-                .parseClaimsJws(token).getBody();
-        return claims;
-    }
+        try {
 
+
+            log.info("解析JWT令牌，原始长度: {}",
+                    token.length());
+
+
+            // 解析令牌
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            log.info("JWT解析成功，主题: {}", claims.getSubject());
+            return claims;
+
+        } catch (MalformedJwtException e) {
+            log.error("JWT格式错误: {}", e.getMessage());
+            throw new RuntimeException("令牌格式无效", e);
+        } catch (ExpiredJwtException e) {
+            log.error("JWT已过期: {}", e.getMessage());
+            throw new RuntimeException("令牌已过期", e);
+        } catch (SignatureException e) {
+            log.error("JWT签名验证失败: {}", e.getMessage());
+            throw new RuntimeException("令牌签名无效", e);
+        } catch (Exception e) {
+            log.error("JWT解析未知错误: {}", e.getMessage());
+            throw new RuntimeException("令牌解析失败", e);
+        }
+    }
 }
