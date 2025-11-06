@@ -28,4 +28,8 @@ public interface EmployeeMapper {
 //    @Select("select * from employee  limit #{start}, #{pageSize}; ")
     List<Employee> selectByPage(EmployeePageQueryDTO employeePageQueryDTO);
 
+    void update(Employee employee);
+
+    @Select("select * from employee where id = #{id}")
+    Employee selectById(Long id);
 }

@@ -13,6 +13,7 @@ import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
+import com.sky.exception.BaseException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.properties.JwtProperties;
@@ -118,6 +119,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         List<Employee> records = page.getResult();
         return new PageResult(total,records);
+    }
+
+    @Override
+    public void startOrstop(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .updateTime(LocalDateTime.now())
+                .updateUser(BaseContext.getCurrentId())
+                .build();
+        employeeMapper.update(employee);
+    }
+
+    @Override
+    public Employee selectById(Long id) {
+        return employeeMapper.selectById(id);
+    }
+
+    @Override
+    public void update(Employee employee) {
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setUpdateTime(LocalDateTime.now());
+        employeeMapper.update(employee);
     }
 
 }

@@ -30,4 +30,10 @@ public interface EmployeeService {
      * @return
      */
     PageResult selectByPage(EmployeePageQueryDTO employeePageQueryDTO);
+
+    void startOrstop(Integer status, Long id);
+
+    Employee selectById(Long id);
+
+    void update(Employee employee);
 }

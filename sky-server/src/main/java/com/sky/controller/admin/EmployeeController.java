@@ -83,7 +83,37 @@ public class EmployeeController {
         PageResult pageResult = employeeService.selectByPage(employeePageQueryDTO);
         return Result.success(pageResult);
 
-    }    /**
+    }
+    /**
+     * 启用/禁用状态
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    public Result startOrstop( @PathVariable Integer status, Long id){
+        employeeService.startOrstop(status,id);
+        return Result.success();
+    }
+    /**
+     * 用于修改时页面回显
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Result<Employee> selectById(@PathVariable Long id){
+        Employee employee = employeeService.selectById(id);
+        return Result.success(employee);
+    }
+
+    @PutMapping()
+    public Result update(@RequestBody Employee employee){
+        employeeService.update(employee);
+        return Result.success();
+    }
+
+
+    /**
      * 退出
      *
      * @return
