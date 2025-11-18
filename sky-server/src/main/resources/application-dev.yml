@@ -9,5 +9,5 @@ sky:
   alioss:
     endpoint: oss-cn-beijing.aliyuncs.com
     bucket-name: xyh6666
-#    access-key-id: LTAI5tMgrsFF8ohey8vfrbAr
-#    access-key-secret: ILiumZ4pP0pDUCTQS4cKVuJluVEzUd
+    access-key-id: LTAI5tMgrsFF8ohey8vfrbAr
+    access-key-secret: ILiumZ4pP0pDUCTQS4cKVuJluVEzUd
