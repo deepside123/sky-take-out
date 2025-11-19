@@ -13,7 +13,8 @@
     </update>
 
     <insert id="insertflavor" >
-        insert into dish_flavor(dish_id, name, value) values
+        insert into dish_flavor(dish_id, name, value)
+        values
         <foreach collection="flavors" item="dishFlavor" separator=",">
             (#{dishFlavor.dishId},#{dishFlavor.name},#{dishFlavor.value})
         </foreach>

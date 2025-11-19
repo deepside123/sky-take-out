@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -70,15 +71,34 @@ public class DishController {
         DishVO dishVO  = dishService.selectById(id);
         return Result.success(dishVO);
     }
+
+    /**
+     * 修改菜品
+     * @param dishDTO
+     * @return
+     */
     @PutMapping()
     public Result update(@RequestBody DishDTO dishDTO){
         log.info("修改菜品：{}",dishDTO);
         dishService.update(dishDTO);
         return Result.success();
     }
+
+    /**
+     * 起售，停售菜品
+     * @param status
+     * @param id
+     * @return
+     */
     @PostMapping("/status/{status}")
     public Result update_status(@PathVariable Integer status ,Long id){
         dishService.updateStatus(status,id);
         return Result.success();
     }
+    @GetMapping("/list")
+    public Result<List> seleceBycategoryId(String categoryId){
+        List<Dish> dishes = dishService.seleceBycategoryId(categoryId);
+        return Result.success(dishes);
+    }
+
 }

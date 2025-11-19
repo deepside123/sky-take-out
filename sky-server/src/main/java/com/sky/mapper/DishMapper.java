@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -43,4 +44,6 @@ public interface DishMapper {
     @Autofill(OperationType.UPDATE)
     void update(Dish dish);
 
+    @Select("select * from dish where category_id = #{categoryId}")
+    List<Dish> selectBycategoryId(String categoryId);
 }
