@@ -98,9 +98,11 @@ public class DishServiceImpl implements DishService {
 
         //填充
         List<DishFlavor> flavors = dishDTO.getFlavors();
-        flavors.forEach(dishFlavor -> dishFlavor.setDishId(dishId));
-        log.info("修改菜品口味：{}",flavors);
-        dish_flavorMapper.insertflavor(flavors);
+        if(flavors.size() != 0){
+            flavors.forEach(dishFlavor -> dishFlavor.setDishId(dishId));
+            log.info("修改菜品口味：{}",flavors);
+            dish_flavorMapper.insertflavor(flavors);
+        }
     }
 
     public void updateStatus(Integer status, Long id) {
@@ -111,7 +113,21 @@ public class DishServiceImpl implements DishService {
         dishMapper.update(dish);
     }
 
-    public List<Dish> seleceBycategoryId(String categoryId) {
+    public List<Dish> seleceBycategoryId(Long categoryId) {
         return dishMapper.selectBycategoryId(categoryId);
+    }
+
+    @Override
+    public List<DishVO> listWithFlavor(Dish dish) {
+        List<DishVO> dishVO = new ArrayList<>();
+        List<Dish> dish1 = dishMapper.selectBycategoryId(dish.getCategoryId());
+        for (Dish d: dish1) {
+            DishVO dishVO1 = new DishVO();
+            BeanUtils.copyProperties(d,dishVO1);
+            List<DishFlavor> dishFlavors = dish_flavorMapper.selectByDishID(dishVO1.getId());
+            dishVO1.setFlavors(dishFlavors);
+            dishVO.add(dishVO1);
+        }
+        return dishVO;
     }
 }

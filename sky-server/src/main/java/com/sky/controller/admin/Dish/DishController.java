@@ -1,4 +1,4 @@
-package com.sky.controller.Dish;
+package com.sky.controller.admin.Dish;
 
 
 import com.sky.dto.DishDTO;
@@ -10,11 +10,9 @@ import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -96,7 +94,7 @@ public class DishController {
         return Result.success();
     }
     @GetMapping("/list")
-    public Result<List> seleceBycategoryId(String categoryId){
+    public Result<List> seleceBycategoryId(Long  categoryId){
         List<Dish> dishes = dishService.seleceBycategoryId(categoryId);
         return Result.success(dishes);
     }

@@ -39,7 +39,6 @@ public class HttpClientUtil {
 
         String result = "";
         CloseableHttpResponse response = null;
-
         try{
             URIBuilder builder = new URIBuilder(url);
             if(paramMap != null){
