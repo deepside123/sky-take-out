@@ -120,7 +120,7 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<DishVO> listWithFlavor(Dish dish) {
         List<DishVO> dishVO = new ArrayList<>();
-        List<Dish> dish1 = dishMapper.selectBycategoryId(dish.getCategoryId());
+        List<Dish> dish1 = dishMapper.list(dish);
         for (Dish d: dish1) {
             DishVO dishVO1 = new DishVO();
             BeanUtils.copyProperties(d,dishVO1);
